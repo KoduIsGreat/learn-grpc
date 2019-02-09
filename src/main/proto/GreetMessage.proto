@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+option java_multiple_files = true;
+option java_package = "com.google";
+option java_outer_classname = "Greet";
+option objc_class_prefix = "HLW";
+
+
+message Greeting {
+  required string  name = 1;
+  required string message = 2;
+}
+
+message GreetMessage {
+  required string msg = 1;
+}
+
+service Greeter {
+  rpc Greet(Greeting) returns (GreetMessage) {}
+}
