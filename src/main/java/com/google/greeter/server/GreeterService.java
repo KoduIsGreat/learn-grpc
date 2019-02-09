@@ -1,4 +1,4 @@
-package com.google.client;
+package com.google.greeter.server;
 
 import com.google.GreetMessage;
 import com.google.GreeterGrpc;
@@ -16,7 +16,8 @@ public class GreeterService extends GreeterGrpc.GreeterImplBase implements Binda
   private static final Logger LOG = LoggerFactory.getLogger(GreeterService.class);
   @Override
   public void greet(Greeting request, StreamObserver<GreetMessage> responseObserver) {
-    LOG.info("sayHello endpoint received request from " + request.getName());
+    LOG.info("greet endpoint received request from " + request.getName());
+    System.out.println("greet endpoint received request from " + request.getName());
     String fmtMsg = MessageFormat.format(request.getMessage(),request.getName());
     GreetMessage reply = GreetMessage.newBuilder()
         .setMsg(fmtMsg).build();

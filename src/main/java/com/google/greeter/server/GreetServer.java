@@ -1,4 +1,4 @@
-package com.google.client;
+package com.google.greeter.server;
 
 import io.grpc.BindableService;
 import io.grpc.Server;
@@ -32,13 +32,12 @@ public class GreetServer {
           .addService(greeterService)
           .build()
           .start();
+      System.out.println("Server started, listening on "+ port);
       LOG.info("Server started, listening on {}", port);
-      System.out.println("hi!");
+
       CompletableFuture.runAsync(() -> {
         try {
-          System.out.println("we going!");
           server.awaitTermination();
-          System.out.println("oh we died");
         } catch (InterruptedException ex) {
           LOG.error(ex.getMessage(), ex);
         }

@@ -1,8 +1,9 @@
-package com.google.client;
+package com.google.greeter.client;
 
 import com.google.GreetMessage;
 import com.google.GreeterGrpc;
 import com.google.Greeting;
+import com.google.greeter.server.GreetServer;
 import io.grpc.ManagedChannel;
 import io.grpc.StatusRuntimeException;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +47,7 @@ public class GreetClient {
    */
   public void greet(String name, String message) {
     LOG.info("Will try to greet " + name + " ...");
+    System.out.println("Will try to greet " + name + " ...");
     Greeting request = Greeting.newBuilder()
         .setName(name)
         .setMessage(message)
@@ -55,9 +57,11 @@ public class GreetClient {
       response = blockingStub.greet(request);
     } catch (StatusRuntimeException e) {
       LOG.warn("RPC failed: {0}", e.getStatus());
+      System.out.println("RPC failed: "+ e.getStatus());
       return;
     }
     LOG.info("Greeting: " + response.getMsg());
+    System.out.println("response from server Greeting : " + response.getMsg());
   }
 
   @Reference
