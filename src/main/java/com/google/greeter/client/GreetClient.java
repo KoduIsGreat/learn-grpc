@@ -1,5 +1,7 @@
 package com.google.greeter.client;
 
+import com.google.DescribeGreeting;
+import com.google.Empty;
 import com.google.GreetMessage;
 import com.google.GreeterGrpc;
 import com.google.Greeting;
@@ -31,7 +33,13 @@ public class GreetClient {
         .build();
     blockingStub = GreeterGrpc.newBlockingStub(channel);
     try {
-      greet("adahm", "{0} cant believe its butter!");
+      DescribeGreeting description = describeGreet();
+      Greeting greeting = description
+          .getGreet()
+          .toBuilder()
+          .setMessage("{0} cant believe its butter")
+          .setName("adahm").build();
+      greet(greeting);
       shutdown();
     } catch (InterruptedException ex) {
       LOG.error(ex.getMessage(), ex);
@@ -45,13 +53,10 @@ public class GreetClient {
   /**
    * Say hello to server.
    */
-  public void greet(String name, String message) {
-    LOG.info("Will try to greet " + name + " ...");
-    System.out.println("Will try to greet " + name + " ...");
-    Greeting request = Greeting.newBuilder()
-        .setName(name)
-        .setMessage(message)
-        .build();
+  public void greet(Greeting request) {
+    LOG.info("Will try to greet " + request.getName() + " ...");
+    System.out.println("Will try to greet " + request.getName() + " ...");
+
     GreetMessage response;
     try {
       response = blockingStub.greet(request);
@@ -62,6 +67,20 @@ public class GreetClient {
     }
     LOG.info("Greeting: " + response.getMsg());
     System.out.println("response from server Greeting : " + response.getMsg());
+  }
+
+  public DescribeGreeting describeGreet(){
+    LOG.info("will try to retrieve the greet contract");
+    Empty req = Empty.newBuilder().build();
+    DescribeGreeting response;
+    try{
+      response = blockingStub.describeGreet(req);
+    } catch (StatusRuntimeException e) {
+      System.out.println("RPC failed: " +e.getStatus());
+      return null;
+    }
+    return response;
+
   }
 
   @Reference

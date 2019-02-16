@@ -15,6 +15,7 @@ public class App
       GreeterService service = new GreeterService();
       server.setGreeterService(service);
       server.activate();
+
       client.setGrpcServer(server);
       client.activate();
     }

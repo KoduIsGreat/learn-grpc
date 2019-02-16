@@ -1,8 +1,12 @@
 package com.google.greeter.server;
 
+import com.google.DescribeGreeting;
+import com.google.Empty;
 import com.google.GreetMessage;
 import com.google.GreeterGrpc;
 import com.google.Greeting;
+import com.google.Greeting.Builder;
+import com.google.GreetingOrBuilder;
 import io.grpc.BindableService;
 import io.grpc.stub.StreamObserver;
 import java.text.MessageFormat;
@@ -23,5 +27,21 @@ public class GreeterService extends GreeterGrpc.GreeterImplBase implements Binda
         .setMsg(fmtMsg).build();
     responseObserver.onNext(reply);
     responseObserver.onCompleted();
+  }
+
+  @Override
+  public void describeGreet(Empty request, StreamObserver<DescribeGreeting> responseObserver) {
+    System.out.println("Retrieving description!");
+    DescribeGreeting reply = DescribeGreeting
+        .newBuilder()
+        .setGreet(
+            Greeting.newBuilder()
+                .setName("default")
+                .setMessage("default {0}")
+                .buildPartial())
+        .build();
+    responseObserver.onNext(reply);
+    responseObserver.onCompleted();
+
   }
 }

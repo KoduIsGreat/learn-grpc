@@ -5,7 +5,12 @@ option java_package = "com.google";
 option java_outer_classname = "Greet";
 option objc_class_prefix = "HLW";
 
+message DescribeGreeting {
+  required Greeting greet = 1;
+}
+message Empty {
 
+}
 message Greeting {
   required string  name = 1;
   required string message = 2;
@@ -16,5 +21,6 @@ message GreetMessage {
 }
 
 service Greeter {
-  rpc Greet(Greeting) returns (GreetMessage) {}
+  rpc greet(Greeting) returns (GreetMessage) {}
+  rpc describeGreet(Empty) returns (DescribeGreeting) {}
 }
